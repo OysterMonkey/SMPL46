@@ -1,0 +1,30 @@
+﻿@model SMPL46.Services.ReportingServicesReportViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout_Reports.cshtml";
+}
+
+@{
+    ViewBag.Title = "SC6ReportViewer";
+}
+
+@if ((bool)(System.Web.HttpContext.Current.Session["loggedin"] ?? false))
+{
+    using (Html.BeginForm("SC6Back", "Reports", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+        <div class="form-group">
+            <div class="col-md-offset-0">
+                <input type="submit" value="Back to Report Parameters" class="btn btn-link" />
+            </div>
+        </div>
+    }
+    var timestamp = DateTime.Now;
+    <div>
+        <iframe id="reportFrame" name="reportFrame_@(timestamp)" src="../../Reports/SmplReportViewer.aspx?Name=@Model.ReportPath" marginwidth="0" marginheight="0" ></iframe>
+    </div>
+}
+else
+{
+    <h3 style="font-weight: bold; color: red;">Please Log into SMPL before proceeding.</h3>
+}
+

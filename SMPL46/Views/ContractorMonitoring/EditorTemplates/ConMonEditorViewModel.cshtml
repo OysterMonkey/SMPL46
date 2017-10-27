@@ -1,0 +1,72 @@
+﻿@using SMPL46.ViewModels
+@model ConMonEditorViewModel
+
+<tr class="@Model.BackgroundColour rectificationTableBody">
+    <td style="text-align: center">
+        @if (Model.Enabled)
+        {
+            @Html.CheckBoxFor(model => model.Selected)
+            @Html.HiddenFor(model => model.Selected)
+        }
+        else
+        {
+            @Html.HiddenFor(model => model.Selected)
+            @Html.CheckBoxFor(model => model.Selected, new { @disabled = "disabled" })
+        }
+    </td>
+    <td>
+        @Html.DisplayFor(model => model.seq_id)
+        @Html.HiddenFor(model => model.seq_id)
+    </td>
+    <td>
+        @Html.DisplayFor(model => model.inspected_date)
+        @Html.HiddenFor(model => model.inspected_date)
+    </td>
+    <td>
+        @Html.DisplayFor(model => model.ward_name)
+        @Html.HiddenFor(model => model.ward_name)
+    </td>
+    <td>
+        @Html.DisplayFor(model => model.colour)
+        @Html.HiddenFor(model => model.colour)
+    </td>
+    <td>
+        @Html.DisplayFor(model => model.freq_code)
+        @Html.HiddenFor(model => model.freq_code)
+    </td>
+    <td>
+        @Html.DisplayFor(model => model.street_name)
+        @Html.HiddenFor(model => model.street_name)
+    </td>
+    <td>
+        @Html.DisplayFor(model => model.limits)
+        @Html.HiddenFor(model => model.limits)
+    </td>
+    <td>
+        @Html.DisplayFor(model => model.grade)
+        @Html.HiddenFor(model => model.grade)
+    </td>
+    <td>
+        @Html.DisplayFor(model => model.reason_code)
+        @Html.HiddenFor(model => model.reason_code)
+    </td>
+    <td>
+        @Html.DisplayFor(model => model.inspection_comments)
+        @Html.HiddenFor(model => model.inspection_comments)
+    </td>
+    <td>
+        @Html.DisplayFor(model => model.inspected_by)
+        @Html.HiddenFor(model => model.inspected_by)
+    </td>
+    <td>
+        @Html.DisplayFor(model => model.cleanse_due_on)
+        @Html.HiddenFor(model => model.cleanse_due_on)
+    </td>
+    <td>
+        @Html.DisplayFor(model => model.cleansesubmitted)
+        @Html.HiddenFor(model => model.cleansesubmitted)
+    </td>
+    @Html.HiddenFor(model => model.pkuid)
+    @Html.HiddenFor(model => model.Enabled)
+    @Html.HiddenFor(model => model.BackgroundColour)
+</tr>

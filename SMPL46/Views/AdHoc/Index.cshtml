@@ -1,0 +1,232 @@
+﻿@using System
+@using System.Drawing
+@using SMPL46.ViewModels
+@model AdHocSelectionViewModel
+
+@{
+    ViewBag.Title = "Index";
+}
+
+@if ((bool)(System.Web.HttpContext.Current.Session["loggedin"] ?? false))
+{
+
+    <h2>Ad Hoc Rectification</h2>
+    <hr />
+
+    <div id="dvSubmitProgress" class="submit-rect-progress hidden">
+        <label>Please wait while Submitting Rectifications...</label>
+    </div>
+
+    using (Html.BeginForm(null, null, FormMethod.Post, new { @class = "form-inline", role = "form" }))
+    {
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(m => m.StartDate, new { @class = "col-xs-2 control-label" })
+            <div class="col-xs-9">
+                @Html.TextBoxFor(m => m.StartDate, "{0:dd/MM/yyyy}", new { @class = "form-control datepicker" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.EndDate, new { @class = "col-xs-2 control-label" })
+            <div class="col-xs-9">
+                @Html.TextBoxFor(m => m.EndDate, "{0:dd/MM/yyyy}", new { @class = "form-control datepicker" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-1 col-xs-12">
+                <input type="submit" value="Get Failed Transects" name="getFailedAdHocTransects" class="btn btn-primary" />
+            </div>
+        </div>
+        <br />
+        <br />
+
+        if (Model.AdHocRectifications != null)
+        {
+            if (Model.AdHocRectifications.Count > 0)
+            {
+                <table class="table table-bordered">
+                    <tr class="rectificationTableHeader2">
+                        <th>
+
+                        </th>
+                        <th>
+                            @Html.Label("URN")
+                        </th>
+                        <th>
+                            @Html.Label("Inspected Date")
+                        </th>
+                        <th>
+                            @Html.Label("Ward Name")
+                        </th>
+                        <th>
+                            @Html.Label("Colour")
+                        </th>
+                        <th>
+                            @Html.Label("Frequency")
+                        </th>
+                        <th>
+                            @Html.Label("Street Name")
+                        </th>
+                        <th>
+                            @Html.Label("Limits")
+                        </th>
+                        <th>
+                            @Html.Label("Grade")
+                        </th>
+                        <th>
+                            @Html.Label("Reason Code")
+                        </th>
+                        <th>
+                            @Html.Label("Comments")
+                        </th>
+                        <th>
+                            @Html.Label("Inspected By")
+                        </th>
+                        <th>
+                            @Html.Label("Contender Reference")
+                        </th>
+                        <th>
+                            @Html.Label("Next Sched Cleanse")
+                        </th>
+                        <th>
+                            @Html.Label("Cleanse Due Date")
+                        </th>
+                        <th>
+                            @Html.Label("Cleanse Submitted")
+                        </th>
+                    </tr>
+                    @for (int i = 0; i < Model.AdHocRectifications.Count; i++)
+                    {
+                        <tr class="@Model.AdHocRectifications[i].BackgroundColour rectificationTableBody">
+                            <td style="text-align: center">
+                                @if (Model.AdHocRectifications[i].Enabled)
+                                {
+                                    @Html.CheckBoxFor(m => m.AdHocRectifications[i].Selected, new { onclick = "setAdHocEnabledStatus(" + i + ")" })
+                                    @Html.HiddenFor(m => m.AdHocRectifications[i].Selected)
+                                }
+                                else
+                                {
+                                    @Html.HiddenFor(m => m.AdHocRectifications[i].Selected)
+                                    @Html.CheckBoxFor(m => m.AdHocRectifications[i].Selected, new { @disabled = "disabled" })
+                                }
+                            </td>
+                            <td>
+                                @Html.DisplayFor(m => m.AdHocRectifications[i].seq_id)
+                                @Html.HiddenFor(m => m.AdHocRectifications[i].seq_id)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(m => m.AdHocRectifications[i].inspected_date)
+                                @Html.HiddenFor(m => m.AdHocRectifications[i].inspected_date)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(m => m.AdHocRectifications[i].ward_name)
+                                @Html.HiddenFor(m => m.AdHocRectifications[i].ward_name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(m => m.AdHocRectifications[i].colour)
+                                @Html.HiddenFor(m => m.AdHocRectifications[i].colour)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(m => m.AdHocRectifications[i].freq_code)
+                                @Html.HiddenFor(m => m.AdHocRectifications[i].freq_code)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(m => m.AdHocRectifications[i].street_name)
+                                @Html.HiddenFor(m => m.AdHocRectifications[i].street_name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(m => m.AdHocRectifications[i].limits)
+                                @Html.HiddenFor(m => m.AdHocRectifications[i].limits)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(m => m.AdHocRectifications[i].grade)
+                                @Html.HiddenFor(m => m.AdHocRectifications[i].grade)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(m => m.AdHocRectifications[i].reason_code)
+                                @Html.HiddenFor(m => m.AdHocRectifications[i].reason_code)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(m => m.AdHocRectifications[i].inspection_comments)
+                                @Html.HiddenFor(m => m.AdHocRectifications[i].inspection_comments)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(m => m.AdHocRectifications[i].inspected_by)
+                                @Html.HiddenFor(m => m.AdHocRectifications[i].inspected_by)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(m => m.AdHocRectifications[i].contenderreference)
+                                @Html.HiddenFor(m => m.AdHocRectifications[i].contenderreference)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(m => m.AdHocRectifications[i].next_sched_cleanse)
+                                @Html.HiddenFor(m => m.AdHocRectifications[i].next_sched_cleanse)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(m => m.AdHocRectifications[i].cleanse_due_on)
+                                @Html.HiddenFor(m => m.AdHocRectifications[i].cleanse_due_on)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(m => m.AdHocRectifications[i].cleansesubmitted)
+                                @Html.HiddenFor(m => m.AdHocRectifications[i].cleansesubmitted)
+                            </td>
+                            @Html.HiddenFor(m => m.AdHocRectifications[i].pkuid)
+                            @Html.HiddenFor(m => m.AdHocRectifications[i].Enabled)
+                            @Html.HiddenFor(m => m.AdHocRectifications[i].HiddenEnabled, new { id = "hidChkBox_" + i })
+                            @Html.HiddenFor(m => m.AdHocRectifications[i].BackgroundColour)
+                        </tr>
+                    }
+
+                    @*@Html.EditorFor(m => m.AdHocRectifications)*@
+
+                </table>
+                <input type="submit" value="Submit Rectifications" name="submitAdHocRectifications" class="btn btn-primary" />
+                @*@Html.ActionLink("Submit Rectifications", "submitAdHocRectifications", "AdHoc", FormMethod.Post, new { @class = "btn btn-primary", onclick = "return DisplayProgressMessage(this, 'Submitting...', 'Please wait - Submitting Rectifications');" })*@
+            }
+            else
+            {
+                <h4 style="font-weight: bold; " class="envirohubColour1">No Failed Transects found for selected date range.</h4>
+            }
+        }
+    }
+}
+else
+{
+    <h3 style="font-weight: bold; color: red;">Please Log into SMPL before proceeding.</h3>
+}
+
+@section Scripts {
+    @*<script type="text/javascript">
+        $('.datepicker').datepicker({
+            format: 'dd/mm/yyyy',
+            autoclose: true
+        }); //Initialise any date pickers
+    </script>*@
+    <script type="text/javascript">
+        $(document).ready(
+            function SetHiddenEnabled() {
+                var index = 0;
+                var vhidChkEnabled = null;
+                vhidChkEnabled = document.getElementById("hidChkBox_" + index);
+                while (vhidChkEnabled != null) {
+                    vhidChkEnabled.value = "true";
+                    index += 1;
+                    vhidChkEnabled = document.getElementById("hidChkBox_" + index);
+                }
+            }
+        );
+        function DisplayProgressMessage(ctl, msg, lbl) {
+            $(ctl).prop("disabled", true).text(msg);
+            $('#dvSubmitProgress label').text(lbl);
+            $(".submit-rect-progress").removeClass("hidden");
+            if (msg == 'Submitting...') {
+                setTimeout(function () {
+                    window.location.reload(1);
+                }, 10000);
+            }
+            return true;
+        }
+    </script>
+}
+

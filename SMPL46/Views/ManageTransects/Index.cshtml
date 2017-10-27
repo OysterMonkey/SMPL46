@@ -1,0 +1,71 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+@if ((bool)(System.Web.HttpContext.Current.Session["loggedin"] ?? false))
+{
+    <h2>Manage Transects</h2>
+
+    <div id="dvSubmitProgress" class="submit-progress hidden">
+        <label>Please wait while Importing Transects...</label>
+    </div>
+
+    <div>
+        <h3>SMPL Transect Details</h3>
+        <p>Using this page you can view all SMPL Transects, apply filters to focus on areas of interest. Once you have found the transect(s) you are looking for, you can apply edits.</p>
+        <div>
+            @Html.ActionLink("View Transects Listing", "Details", "ManageTransects", null, new { @class = "btn btn-primary btn-sm mb-20", onclick = "return DisplayProgressMessage(this, 'Retrieving Transects...', 'Please wait - Retrieving Transects');" })
+        </div>
+    </div>
+
+    <div>
+        <h3>SMPL Transect History</h3>
+        <p>Using this page you can view all changes made to the SMPL Transects.</p>
+        <div>
+            @Html.ActionLink("View Transects History", "History", "ManageTransects", null, new { @class = "btn btn-primary btn-sm mb-20", onclick = "return DisplayProgressMessage(this, 'Retrieving History...', 'Please wait - Retrieving History');" })
+        </div>
+    </div>
+
+    using (Html.BeginForm("PostUploadFileAction", "ManageTransects", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <h3>Upload / Download SMPL Transects</h3>
+        <p>You can Download [Export] the current set of transects from the SMPL database using the Download button (below).</p>
+        <div id="dvDownLoadButton">
+            @Html.ActionLink("Download", "PostDownloadFileAction", "ManageTransects", FormMethod.Post, new { @class = "btn btn-primary btn-sm mb-20", onclick = "return DisplayProgressMessage(this, 'Exporting...', 'Please wait - Exporting Transects');" })
+        </div>
+
+        <p>You can Upload [Import] a set of transects from an Excel file (.xls or .xlsx) using the Upload button (below). First select the Excel file that you want to load, and then click on the Upload button.</p>
+        <p>Please Note: All existing transects will be replaced by the new set. The old set of transects will be archived.</p>
+        <div id="dvUpDateFile">
+            <div>
+                <input type="file" name="file" accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
+            </div>
+            <div class="mt-20">
+                <input type="submit" id="submitButton" name="Submit" value="UpLoad" class="btn btn-primary btn-sm" onclick="return DisplayProgressMessage(this, 'Importing...', 'Please wait - Importing Transects');" />
+            </div>
+        </div>
+        <div role="alert" id="actionAlertUpload" class="alert" style="display:none;"></div>
+    }
+}
+else
+{
+    <h3 style="font-weight: bold; color: red;">Please Log into SMPL before proceeding.</h3>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        function DisplayProgressMessage(ctl, msg, lbl) {
+            $(ctl).prop("disabled", true).text(msg);
+            $('#dvSubmitProgress label').text(lbl);
+            $(".submit-progress").removeClass("hidden");
+            if (msg == 'Exporting...') {
+                setTimeout(function () {
+                    window.location.reload(1);
+                }, 10000);
+            }
+            return true;
+        }
+    </script>
+}

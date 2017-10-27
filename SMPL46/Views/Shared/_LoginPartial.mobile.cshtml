@@ -1,0 +1,19 @@
+﻿@if ((bool)(System.Web.HttpContext.Current.Session["loggedin"] ?? false))
+{
+    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <div data-role="navbar" >
+            <span class="ui-title"></span>
+            @Html.ActionLink("Log Off", "LogOffMobile", "Account", routeValues: null, htmlAttributes: new { onclick = "javascript:document.getElementById('logoutForm').submit()" })
+        </div>
+    }
+}
+else
+{
+    <div data-role="navbar">
+        <span class="ui-title"></span>
+        @Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })
+    </div>
+}

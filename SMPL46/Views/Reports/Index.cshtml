@@ -1,0 +1,45 @@
+﻿@model System.Collections.Generic.IEnumerable<SMPL46.Models.SmplReportSelectionByUser>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+@if ((bool)(System.Web.HttpContext.Current.Session["loggedin"] ?? false))
+{
+    <h2>Reports</h2>
+
+    <table class="table">
+        <tr>
+            <th>
+                @Html.Label("Code")
+            </th>
+            <th>
+                @Html.Label("Category")
+            </th>
+            <th>
+                @Html.Label("Description")
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SmplReportSelection_code)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.role_description)
+                </td>
+                <td>
+                    @Html.ActionLink(item.SmplReportSelection_name.ToString(), item.SmplReportSelection_code, new { id = 0 })
+                </td>
+            </tr>
+        }
+
+    </table>
+}
+else
+{
+    <h3 style="font-weight: bold; color: red;">Please Log into SMPL before proceeding.</h3>
+}

@@ -1,0 +1,13 @@
+﻿@using ReportViewerForMvc;
+@{
+    ViewBag.Title = "ReportView";
+}
+
+@if ((bool)(System.Web.HttpContext.Current.Session["loggedin"] ?? false))
+{
+    @Html.ReportViewer(ViewBag.ReportViewer as Microsoft.Reporting.WebForms.ReportViewer, new { scrolling = "no" })
+}
+else
+{
+    <h3 style="font-weight: bold; color: red;">Please Log into SMPL before proceeding.</h3>
+}

@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using NLog;
 using SMPL46.Models;
 
 namespace SMPL46.Controllers
@@ -15,6 +16,10 @@ namespace SMPL46.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+
+        private AccountDataService ds = new AccountDataService();
+
+        private static Logger logger = LogManager.GetCurrentClassLogger();
 
         public ManageController()
         {
@@ -32,9 +37,9 @@ namespace SMPL46.Controllers
             {
                 return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
-            private set 
-            { 
-                _signInManager = value; 
+            private set
+            {
+                _signInManager = value;
             }
         }
 
@@ -52,7 +57,7 @@ namespace SMPL46.Controllers
 
         //
         // GET: /Manage/Index
-        public async Task<ActionResult> Index(ManageMessageId? message)
+        public ActionResult Index(ManageMessageId? message)
         {
             ViewBag.StatusMessage =
                 message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
@@ -63,14 +68,13 @@ namespace SMPL46.Controllers
                 : message == ManageMessageId.RemovePhoneSuccess ? "Your phone number was removed."
                 : "";
 
-            var userId = User.Identity.GetUserId();
             var model = new IndexViewModel
             {
-                HasPassword = HasPassword(),
-                PhoneNumber = await UserManager.GetPhoneNumberAsync(userId),
-                TwoFactor = await UserManager.GetTwoFactorEnabledAsync(userId),
-                Logins = await UserManager.GetLoginsAsync(userId),
-                BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId)
+                HasPassword = ((bool)(System.Web.HttpContext.Current.Session["loggedin"] ?? false)),
+                PhoneNumber = null,
+                TwoFactor = false,
+                Logins = null,
+                BrowserRemembered = false
             };
             return View(model);
         }
@@ -195,9 +199,7 @@ namespace SMPL46.Controllers
         }
 
         //
-        // POST: /Manage/RemovePhoneNumber
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        // GET: /Manage/RemovePhoneNumber
         public async Task<ActionResult> RemovePhoneNumber()
         {
             var result = await UserManager.SetPhoneNumberAsync(User.Identity.GetUserId(), null);
@@ -259,17 +261,20 @@ namespace SMPL46.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = await UserManager.AddPasswordAsync(User.Identity.GetUserId(), model.NewPassword);
-                if (result.Succeeded)
-                {
-                    var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-                    if (user != null)
-                    {
-                        await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-                    }
-                    return RedirectToAction("Index", new { Message = ManageMessageId.SetPasswordSuccess });
-                }
-                AddErrors(result);
+                //var result = await UserManager.AddPasswordAsync(User.Identity.GetUserId(), model.NewPassword);
+                //if (result.Succeeded)
+                //{
+                //    var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+                //    if (user != null)
+                //    {
+                //        await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                //    }
+                //    return RedirectToAction("Index", new { Message = ManageMessageId.SetPasswordSuccess });
+                //}
+                //AddErrors(result);
+                //logger.Info("Resetting password");
+
+                //var result = ds.updateGripUser(model.Email, id, model.Password);
             }
 
             // If we got this far, something failed, redisplay form
@@ -333,7 +338,7 @@ namespace SMPL46.Controllers
             base.Dispose(disposing);
         }
 
-#region Helpers
+        #region Helpers
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";
 

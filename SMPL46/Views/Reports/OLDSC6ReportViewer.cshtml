@@ -1,0 +1,22 @@
+@model SMPL46.Services.ReportingServicesReportViewModel
+@{
+    ViewBag.Title = "SC6ReportViewer";
+}
+
+@if ((bool)(System.Web.HttpContext.Current.Session["loggedin"] ?? false))
+{
+    <a href="javascript:void(0);" onclick="history.go(-2);">Back to Details</a>
+    <div style="display: table; width: 100%;">
+
+        @{
+
+            @Html.Partial("SC6ReportViewerUserControl", Model)
+
+        }
+    </div>
+}
+else
+{
+    <h3 style="font-weight: bold; color: red;">Please Log into SMPL before proceeding.</h3>
+}
+

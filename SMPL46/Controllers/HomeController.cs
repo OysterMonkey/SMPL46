@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using SMPL46.ViewModels;
 
 namespace SMPL46.Controllers
 {
@@ -10,7 +11,11 @@ namespace SMPL46.Controllers
     {
         public ActionResult Index()
         {
-            return View();
+            var model = new HomeViewModel();
+
+            model.SMPLVersion = String.IsNullOrEmpty(System.Configuration.ConfigurationManager.AppSettings["SMPLVersion"]) ? "STAGE" : System.Configuration.ConfigurationManager.AppSettings["SMPLVersion"];
+
+            return View(model);
         }
 
         public ActionResult About()

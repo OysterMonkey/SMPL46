@@ -1,0 +1,25 @@
+﻿@model SMPL46.Models.SC1StreetInspection
+
+@{
+    Layout = "~/Views/Shared/_Layout_Reports.cshtml";
+}
+
+@{
+    ViewBag.Title = "SC1ReportViewer";
+}
+
+@if ((bool)(System.Web.HttpContext.Current.Session["loggedin"] ?? false))
+{
+    if (Model != null)
+    {
+        var timestamp = DateTime.Now;
+        <div>
+            <iframe id="reportFrame2" name="reportFrame_@(timestamp)" src="../../Reports/SC1Report.aspx?pkuid=@Model.CombinedPkuid" marginwidth="0" marginheight="0" ></iframe>
+        </div>
+    }
+}
+else
+{
+    <h3 style="font-weight: bold; color: red;">Please Log into SMPL before proceeding.</h3>
+}
+

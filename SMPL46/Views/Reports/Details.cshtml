@@ -1,0 +1,17 @@
+﻿@{
+    ViewBag.Title = "Details";
+}
+
+@if ((bool)(System.Web.HttpContext.Current.Session["loggedin"] ?? false))
+{
+    <h2>Details</h2>
+
+    <div>
+        <h4>SmplReportSelection</h4>
+        <hr />
+    </div>
+}
+else
+{
+    <h3 style="font-weight: bold; color: red;">Please Log into SMPL before proceeding.</h3>
+}

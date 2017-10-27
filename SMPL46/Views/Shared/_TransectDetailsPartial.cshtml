@@ -1,0 +1,27 @@
+﻿@model List<SMPL.Models.ManageTransectsModel>
+
+
+@foreach (var transect in Model)
+{
+    <tr class="rectificationTableBody">
+        <td>@transect.Cleaning_ID</td>
+        <td>@transect.Street_Name</td>
+        <td>@transect.Limits</td>
+        <td>@transect.Ward_Name</td>
+        <td>@transect.District</td>
+        <td>@transect.Freq_Code</td>
+        <td>@transect.Cleaning_Day</td>
+        <td>@transect.Cleaning_Week</td>
+        <td>@transect.Deep_Week</td>
+        <td>@transect.Deep_Day</td>
+        <td>@transect.Category</td>
+        <td>@transect.Land_Use_Desc</td>
+        <td>@transect.Zone_Nr</td>
+        <td>@transect.Length</td>
+        <td>@transect.USRN</td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id = transect.Cleaning_ID }) |
+            @Html.ActionLink("Delete", "Delete", new { id = transect.Cleaning_ID })
+        </td>
+    </tr>
+}

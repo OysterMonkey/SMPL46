@@ -1,0 +1,23 @@
+﻿@using SMPL46.ViewModels
+@model StreetFinderEditorViewModel
+
+<tr class="rectificationTableBody">
+    <td>
+        @Html.DisplayFor(model => model.Ward_Name)
+        @Html.HiddenFor(model => model.Ward_Name)
+    </td>
+    <td>
+        @Html.DisplayFor(model => model.District)
+        @Html.HiddenFor(model => model.District)
+    </td>
+    <td>
+        @Html.ActionLink(Model.Street_Name, "SC9Street", new { street = Model.streetsection })
+        @*@Html.ActionLink(Model.Street_Name, "SC9Street", FormMethod.Post, new { street = Model.streetsection })*@
+        @Html.HiddenFor(model => model.Street_Name)
+    </td>
+    <td>
+        @Html.DisplayFor(model => model.Limits)
+        @Html.HiddenFor(model => model.Limits)
+    </td>
+    @Html.HiddenFor(model => model.streetsection)
+</tr>

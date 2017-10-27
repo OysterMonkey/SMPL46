@@ -1,0 +1,132 @@
+﻿@using SMPL46.ViewModels
+@using SMPL46.Models
+@model SMPL46.ViewModels.ManageTransectsViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout_TransectDetails.cshtml";
+}
+
+@{
+    ViewBag.Title = "Details";
+}
+
+@if ((bool)(System.Web.HttpContext.Current.Session["loggedin"] ?? false))
+{
+    using (Html.BeginForm("Details", "ManageTransects", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+        <div class="form-group">
+            @Html.LabelFor(m => m.FilterStreetStr, new { @class = "col-xs-2 control-label" })
+            <div class="col-xs-4">
+                @Html.TextBoxFor(m => m.FilterStreetStr, new { @class = "form-control" })
+            </div>
+            @Html.LabelFor(m => m.FilterLimitsStr, new { @class = "col-xs-2 control-label" })
+            <div class="col-xs-4">
+                @Html.TextBoxFor(m => m.FilterLimitsStr, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.FilterWardCode, new { @class = "col-xs-2 control-label" })
+            <div class="col-xs-4">
+                @Html.DropDownListFor(m => m.FilterWardCode, Model.FilterWards, new { @class = "form-control" })
+            </div>
+            @Html.LabelFor(m => m.FilterFreqCodeStr, new { @class = "col-xs-2 control-label" })
+            <div class="col-xs-4">
+                @Html.DropDownListFor(m => m.FilterFreqCodeStr, Model.FilterFreqCodes, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-1 col-xs-5 mt-20">
+                <input type="submit" value="Filter" class="btn btn-primary" />
+            </div>
+            <div class="col-md-offset-1 col-xs-5">
+                @Html.ActionLink("Add New Transect", "CreateTransect", null, new { @class = "btn btn-primary mt-20" })
+            </div>
+        </div>
+    }
+
+    <div id="grid">
+        <table>
+            <tr>
+                <td>
+
+                    @{
+                        var grid = new WebGrid(Model.Transects, canPage: true, rowsPerPage: 20, selectionFieldName: "Cleaning_ID", defaultSort: "Street_Name");
+                        grid.Pager(WebGridPagerModes.NextPrevious);}
+
+                        @grid.GetHtml(tableStyle: "webgrid-table", mode: WebGridPagerModes.All,
+                        firstText: "<< First",
+                        previousText: "< Prev",
+                        nextText: "Next >",
+                        lastText: "Last >>",
+                        headerStyle: "webgrid-header",
+                        footerStyle: "webgrid-footer",
+                        alternatingRowStyle: "webgrid-alternating-row",
+                        selectedRowStyle: "webgrid-selected-row",
+                        rowStyle: "webgrid-row-style",
+                        columns: grid.Columns(
+                            grid.Column("Cleaning_ID", "ID", canSort: true, style: "cleaningid"),
+                            grid.Column("Street_Name", "Street Name", canSort: true, style: "streetname"),
+                            grid.Column("Limits", "Limits", canSort: true, style: "Limits"),
+                            grid.Column("Ward_Name", "Ward Name", canSort: true, style: "Ward_Name"),
+                            grid.Column("District", "District", canSort: true, style: "District"),
+                            grid.Column("Freq_Code", "Freq Code", canSort: true, style: "Freq_Code"),
+                            grid.Column("Cleaning_Day", "Clean Day", canSort: true, style: "Cleaning_Day"),
+                            grid.Column("Cleaning_Week", "Clean Week", canSort: true, style: "Cleaning_Week"),
+                            grid.Column("Deep_Week", "Deep Week", canSort: true, style: "Deep_Week"),
+                            grid.Column("Deep_Day", "Deep Day", canSort: true, style: "Deep_Day"),
+                            grid.Column("Category", "Category", canSort: true, style: "Category"),
+                            grid.Column("Land_Use_Desc", "Land Use", canSort: true, style: "Land_Use_Desc"),
+                            grid.Column("Zone_Nr", "Zone Nr", canSort: true, style: "Zone_Nr"),
+                            grid.Column("Length", "Length", canSort: true, style: "Length"),
+                            grid.Column("USRN", "USRN", canSort: false, style: "USRN"),
+                            grid.Column(header: "Edit", format: (item) =>
+                                 {
+                                     var link = Html.ActionLink("Edit", "EditTransect", new { id = item.Cleaning_ID });
+                                     return link;
+                                 }, canSort: false, style: "Edit"),
+                            grid.Column(header: "Delete", style: "Delete", format: @<a id="deleteItem" class="deleteItem" data-target="#basic" data-toggle="modal" data-id="@item.Cleaning_ID">Delete</a>)
+                         ))
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="modal fade" id="basic" tabindex="-1" role="document" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    <h4 class="modal-title">Delete Confirmation</h4>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete this item?
+                </div>
+                <div class="modal-footer">
+                    <button data-dismiss="modal" type="button" class="btn btn-default">Cancel</button>
+                    <button id="btnContinueDelete" type="button" class="btn btn-primary">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+else
+{
+    <h3 style="font-weight: bold; color: red;">Please Log into SMPL before proceeding.</h3>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        var item_to_delete;
+        $(".deleteItem").click(function (e) {
+            item_to_delete = $(this).data('id');
+        });
+        $(".addNewItem").click(function (e) {
+            window.location = "/ManageTransects/CreateTransect/"
+        });
+        $('#btnContinueDelete').click(function () {
+            window.location = "/ManageTransects/DeleteTransect/" + item_to_delete;
+        });
+    </script>
+}

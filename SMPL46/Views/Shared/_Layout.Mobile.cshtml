@@ -1,0 +1,70 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title - Ealing SMPL #2</title>
+    <meta name="viewport" content="width=device-width" />
+    @Styles.Render("~/Content/Mobile/css", "~/Content/jquerymobile/css")
+    @Scripts.Render("~/bundles/jquery", "~/bundles/jquerymobile")
+    @Scripts.Render("~/bundles/smpl")
+
+    <link rel="stylesheet" href="~/Content/jquery.mobile.datepicker.css" />
+    <link rel="stylesheet" href="~/Content/jquery.mobile.datepicker.theme.css" />
+    <script src="~/Scripts/jquery-ui.js"></script>
+    <script src="~/Scripts/jquery.mobile.datepicker.js"></script>
+    <script>
+            $(document).ready(function () {
+                $.mobile.ajaxEnabled = false;
+            });
+    </script>
+</head>
+<body>
+
+    <div data-role="page" data-theme="a">
+        @Html.Partial("_ViewSwitcher")
+        @Html.Partial("_LoginPartial")
+
+        <div data-role="navbar" data-grid="d">
+            <ul>
+                @if ((bool)((System.Web.HttpContext.Current.Session["loggedin"] ?? false)))
+                {
+                    <li>@Html.ActionLink("Reports", "Index", "Reports", routeValues: null, htmlAttributes: null)</li>
+                    if ((bool)((System.Web.HttpContext.Current.Session["UserRoles"] as List<string> ?? new List<string>()).Contains("RC")))
+                    {
+                        <li>@Html.ActionLink("Rect", "Index", "Rectification", routeValues: null, htmlAttributes: null)</li>
+                    }
+                    if ((bool)((System.Web.HttpContext.Current.Session["UserRoles"] as List<string> ?? new List<string>()).Contains("CA")))
+                    {
+                        <li>@Html.ActionLink("ConMon", "Index", "ContractorMonitoring", routeValues: null, htmlAttributes: null)</li>
+                    }
+                    if ((bool)((System.Web.HttpContext.Current.Session["UserRoles"] as List<string> ?? new List<string>()).Contains("AH")))
+                    {
+                        <li>@Html.ActionLink("Ad Hoc", "Index", "AdHoc", routeValues: null, htmlAttributes: null)</li>
+                    }
+                } 
+            </ul>
+        </div>
+
+        <div data-role="content">
+            @*@RenderSection("featured", false)*@
+            @RenderBody()
+        </div>
+
+        @*<footer style="height: 50px; background-color: white;">
+            <div style="float: left; width: auto">
+                <img src="..\..\images\iBase_logoTransparent.png" alt="" height="50" style="margin-left: 25px; margin-top: 0px; margin-bottom: 10px;" />
+            </div>
+            <div style="float: left; color: black; margin-left: 25px; margin-top: 25px; font-size: 9pt; font-weight: bold;">
+                <p>&copy; @DateTime.Now.Year - Ealing SMPL #2</p>
+            </div>
+            <div style="float: right; width: auto">
+                <img src="..\..\images\Ealing_Logo_Colour_CMYK.jpg" alt="" height="50" style="margin-left: 25px; margin-top: 0px; margin-bottom: 10px;" />
+            </div>
+            <div style="clear: both;"></div>
+        </footer>*@
+
+    </div>
+    @RenderSection("scripts", required: false)
+
+</body>
+</html>

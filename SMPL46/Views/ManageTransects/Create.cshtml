@@ -1,0 +1,147 @@
+﻿@using System
+@using System.Drawing
+@using SMPL46.ViewModels
+@model CreateTransectViewModel
+
+
+@{
+    ViewBag.Title = "Create";
+}
+
+@if ((bool)(System.Web.HttpContext.Current.Session["loggedin"] ?? false))
+{
+    <h2>Create</h2>
+
+    using (Html.BeginForm(null, null, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+        @Html.HiddenFor(model => model.Cleaning_ID)
+        <div class="form-group">
+            @Html.LabelFor(model => model.Street_Name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Street_Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Street_Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Limits, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Limits, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Limits, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Ward_Name, new { @class = "col-md-2 control-label" })
+            <div class="col-md-4">
+                @Html.DropDownListFor(m => m.Ward_Name, Model.Wards, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Ward_Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.District, new { @class = "col-md-2 control-label" })
+            <div class="col-md-4">
+                @Html.DropDownListFor(m => m.District, Model.Districts, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.District, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Freq_Code, new { @class = "col-md-2 control-label" })
+            <div class="col-md-4">
+                @Html.DropDownListFor(m => m.Freq_Code, Model.Freq_Codes, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Freq_Code, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Cleaning_Day, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @*@Html.EditorFor(model => model.Cleaning_Day, new { htmlAttributes = new { @class = "form-control" } })*@
+                @Html.DropDownListFor(m => m.Cleaning_Day, Model.Cleaning_Days, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Cleaning_Day, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Cleaning_Week, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @*@Html.EditorFor(model => model.Cleaning_Week, new { htmlAttributes = new { @class = "form-control" } })*@
+                @Html.DropDownListFor(m => m.Cleaning_Week, Model.Cleaning_Weeks, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Cleaning_Week, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Deep_Week, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @*@Html.EditorFor(model => model.Deep_Week, new { htmlAttributes = new { @class = "form-control" } })*@
+                @Html.DropDownListFor(m => m.Deep_Week, Model.Deep_Weeks, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Deep_Week, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Deep_Day, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @*@Html.EditorFor(model => model.Deep_Day, new { htmlAttributes = new { @class = "form-control" } })*@
+                @Html.DropDownListFor(m => m.Deep_Day, Model.Deep_Days, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Deep_Day, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Category, new { @class = "col-md-2 control-label" })
+            <div class="col-md-4">
+                @Html.DropDownListFor(m => m.Category, Model.Categories, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Category, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Zone_Nr, new { @class = "col-md-2 control-label" })
+            <div class="col-md-4">
+                @Html.DropDownListFor(m => m.Zone_Nr, Model.Zone_Nrs, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Zone_Nr, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Land_Use_Desc, new { @class = "col-md-2 control-label" })
+            <div class="col-md-4">
+                @Html.DropDownListFor(m => m.Land_Use_Desc, Model.LandUses, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Land_Use_Desc, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Length, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Length, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Length, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.USRN, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.USRN, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.USRN, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div>
+            <input type="submit" name="save" value="Save" class="btn btn-primary btn-sm mb-20" />
+            <input type="submit" name="cancel" value="Cancel" class="cancel btn btn-primary btn-sm mb-20" />
+        </div>
+    }
+}
+else
+{
+    <h3 style="font-weight: bold; color: red;">Please Log into SMPL before proceeding.</h3>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+

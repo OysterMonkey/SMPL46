@@ -1,0 +1,22 @@
+﻿@using System
+@using SMPL46.ViewModels
+@model HomeViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.Mobile.cshtml";
+    ViewBag.Title = "Home Page";
+}
+
+<div style="width: 100%">
+    @if (Model.SMPLVersion == "STAGE")
+    {
+        <img src="~/images/DSCN0711_small.JPG" alt="" style="width: 100%;"/>
+    }
+    else
+    {
+        <img src="~/images/street cleaning.jpg" alt="" style="width: 100%;"/>
+    }
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

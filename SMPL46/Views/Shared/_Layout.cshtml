@@ -1,44 +1,100 @@
-﻿<!DOCTYPE html>
+﻿@using System
+@using System.Collections.Generic
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>@ViewBag.Title - Ealing SMPL #2</title>
     @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/smpl")
     @Scripts.Render("~/bundles/modernizr")
 
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+    <div class="page">
+        <div class="body-topbar">
+            <div class="row">
+                <div class="col-xs-6">
+                    <a href='@Url.Action("Index", "Home")'>
+                        <img src='@Url.Content("~/images/logosplashh.png")' alt="" height="50" style="margin-left: 50px; margin-top: 10px; margin-bottom: 10px;" />
+                    </a>
+                </div>
+                <div class="col-xs-6 mt-40">
+                    @Html.Partial("_LoginPartial")
+                </div>
             </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                </ul>
-                @Html.Partial("_LoginPartial")
+            <div class="row" style="margin-left: 100px;">
+                @if ((bool)((System.Web.HttpContext.Current.Session["loggedin"] ?? false)))
+                {
+                    @Html.ActionLink("Reports", "Index", "Reports", routeValues: null, htmlAttributes: new { id = "loginLink", @class = "hdrMenuItem" })
+                }
+                @if ((bool)((System.Web.HttpContext.Current.Session["UserRoles"] as List<string> ?? new List<string>()).Contains("RC")))
+                {
+                    @Html.ActionLink("Rectifications", "Index", "Rectification", routeValues: null, htmlAttributes: new { @class = "hdrMenuItem" })
+                }
+                @if ((bool)((System.Web.HttpContext.Current.Session["UserRoles"] as List<string> ?? new List<string>()).Contains("CA")))
+                {
+                    @Html.ActionLink("Contractor Monitoring", "Index", "ContractorMonitoring", routeValues: null, htmlAttributes: new { @class = "hdrMenuItem" })
+                }
+                @if ((bool)((System.Web.HttpContext.Current.Session["UserRoles"] as List<string> ?? new List<string>()).Contains("AH")))
+                {
+                    @Html.ActionLink("Ad Hoc Inspections", "Index", "AdHoc", routeValues: null, htmlAttributes: new { @class = "hdrMenuItem" })
+                }
+                @if ((bool)((System.Web.HttpContext.Current.Session["UserRoles"] as List<string> ?? new List<string>()).Contains("MT")))
+                {
+                    @Html.ActionLink("Manage Transects", "Index", "ManageTransects", routeValues: null, htmlAttributes: new { @class = "hdrMenuItem" })
+                }
             </div>
         </div>
-    </div>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+        <div class="body-content">
+            @RenderBody()
+        </div>
+        <footer class="footer">
+            <div class="row">
+                <div class="col-xs-1 mb-10 mt-10">
+                    <img src="..\..\images\iBase_logoTransparent.png" alt="" height="70" />
+                </div>
+                <div class="col-xs-5 mt-40">
+                    <div style="color: black; font-size: 13pt; font-weight: bold;">
+                        <p>&copy; @DateTime.Now.Year - Ealing SMPL #2</p>
+                    </div>
+                </div>
+                <div class="col-xs-6 text-right mb-10 mt-10">
+                    <img src="..\..\images\Ealing_Logo_Colour_CMYK.jpg" alt="" height="70" style="background-position: calc(100% - 150px) calc(100% - 75px);" />
+                </div>
+            </div>
         </footer>
     </div>
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
+
+    <script type="text/javascript">
+        $('.datepicker').datepicker({
+            format: 'dd/mm/yyyy',
+            autoclose: true
+        }); //Initialise any date pickers
+    </script>
+
+    <script type="text/javascript">
+        //debugger;
+        jQuery(document).ready(function() {
+            var body = $("body");
+            var bodyht = body.height();
+            var bodycontent = $(".body-content");
+            var bodycontentht = bodycontent.height();
+            var footer = $(".footer");
+            var footerht = footer.height();
+            var div = $(".body-topbar");
+            var divht = div.height() * 1.1;
+            bodycontent.css("height", (bodyht - (divht + footerht)) + 'px');
+            //body.css("margin-top", divht);
+            //bodycontent.css("min-height", ($(window).height() - (divht + footerht)) + 'px');
+        });
+    </script>
+
 </body>
 </html>
+

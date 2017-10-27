@@ -1,0 +1,52 @@
+﻿@using System
+@using System.Drawing
+@using SMPL46.ViewModels
+@model AdHocSelectionViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.Mobile.cshtml";
+    ViewBag.Title = "Index";
+}
+
+@if ((bool)(System.Web.HttpContext.Current.Session["loggedin"] ?? false))
+{
+
+    <h2>Ad Hoc Rectification</h2>
+    <hr />
+
+    using (Html.BeginForm(null, null, FormMethod.Post, new { @class = "form-inline", role = "form" }))
+    {
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(m => m.StartDate, new { @class = "col-xs-2 control-label" })
+            <div class="col-xs-9">
+                @Html.TextBoxFor(m => m.StartDate, "{0:dd/MM/yyyy}", new { @class="datepicker", @data_role = "date", @data_inline = "true", @type = "text", @readonly = "readonly" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.EndDate, new { @class = "col-xs-2 control-label" })
+            <div class="col-xs-9">
+                @Html.TextBoxFor(m => m.EndDate, "{0:dd/MM/yyyy}", new { @class = "datepicker", @data_role = "date", @data_inline = "true", @type = "text", @readonly = "readonly" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-1 col-xs-12">
+                <input type="submit" value="Get Failed Transects" name="getFailedAdHocTransectsMobile" class="btn btn-primary" />
+            </div>
+        </div>
+    }
+}
+else
+{
+    <h3 style="font-weight: bold; color: red;">Please Log into SMPL before proceeding.</h3>
+}
+
+@section Scripts {
+<script type="text/javascript">
+        $('.datepicker').date({
+            dateFormat: 'dd/mm/yy',
+            constrainInput: true, 
+            autoclose: true
+        }); //Initialise any date pickers
+</script>
+}

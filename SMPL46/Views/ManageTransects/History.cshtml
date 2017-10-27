@@ -1,0 +1,91 @@
+﻿@using SMPL46.ViewModels
+@using SMPL46.Models
+@model SMPL46.ViewModels.ManageTransectsHistoryViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout_TransectDetails.cshtml";
+}
+
+@{
+    ViewBag.Title = "History";
+}
+
+@if ((bool)(System.Web.HttpContext.Current.Session["loggedin"] ?? false))
+{
+    <h2>History</h2>
+
+    <div id="grid">
+        <table>
+            <tr>
+                <td>
+
+                    @{
+                        var grid = new WebGrid(Model.TransectsHistory, canPage: true, rowsPerPage: 10);
+                        grid.Pager(WebGridPagerModes.NextPrevious);}
+
+                    @grid.GetHtml(tableStyle: "webgrid-table", mode: WebGridPagerModes.All,
+                        firstText: "<< First",
+                        previousText: "< Prev",
+                        nextText: "Next >",
+                        lastText: "Last >>",
+                        headerStyle: "webgrid-header",
+                        footerStyle: "webgrid-footer",
+                        alternatingRowStyle: "webgrid-alternating-row",
+                        selectedRowStyle: "webgrid-selected-row",
+                        rowStyle: "webgrid-row-style",
+                        columns: grid.Columns(
+                            grid.Column("Manage_Transects_Audit_ID", "Audit ID", canSort: true, style: "cleaningid"),
+                            grid.Column("user_id", "User ID", canSort: true, style: "cleaningid"),
+                            grid.Column("action", "Action", canSort: true, style: "cleaningid"),
+                            grid.Column("date_action", "Date of Action", canSort: true, style: "cleaningid"),
+                            grid.Column("Orig_Cleaning_ID", "ORIG ID", canSort: true, style: "cleaningid"),
+                            grid.Column("Orig_Street_Name", "ORIG Street Name", canSort: true, style: "streetname"),
+                            grid.Column("Orig_Limits", "ORIG Limits", canSort: true, style: "Limits"),
+                            grid.Column("Orig_Ward_Name", "ORIG Ward Name", canSort: true, style: "Ward_Name"),
+                            grid.Column("Orig_District", "ORIG District", canSort: true, style: "District"),
+                            grid.Column("Orig_Freq_Code", "ORIG Freq Code", canSort: true, style: "Freq_Code"),
+                            grid.Column("Orig_Cleaning_Day", "ORIG Clean Day", canSort: true, style: "Cleaning_Day"),
+                            grid.Column("Orig_Cleaning_Week", "ORIG Clean Week", canSort: true, style: "Cleaning_Week"),
+                            grid.Column("Orig_Deep_Week", "ORIG Deep Week", canSort: true, style: "Deep_Week"),
+                            grid.Column("Orig_Deep_Day", "ORIG Deep Day", canSort: true, style: "Deep_Day"),
+                            grid.Column("Orig_Category", "ORIG Category", canSort: true, style: "Category"),
+                            grid.Column("Orig_Land_Use_Desc", "ORIG Land Use", canSort: true, style: "Land_Use_Desc"),
+                            grid.Column("Orig_Zone_Nr", "ORIG Zone Nr", canSort: true, style: "Zone_Nr"),
+                            grid.Column("Orig_Length", "ORIG Length", canSort: true, style: "Length"),
+                            grid.Column("Orig_USRN", "ORIG USRN", canSort: false, style: "USRN"),
+                            grid.Column("New_Cleaning_ID", "NEW ID", canSort: true, style: "cleaningid"),
+                            grid.Column("New_Street_Name", "NEW Street Name", canSort: true, style: "streetname"),
+                            grid.Column("New_Limits", "NEW Limits", canSort: true, style: "Limits"),
+                            grid.Column("New_Ward_Name", "NEW Ward Name", canSort: true, style: "Ward_Name"),
+                            grid.Column("New_District", "NEW District", canSort: true, style: "District"),
+                            grid.Column("New_Freq_Code", "NEW Freq Code", canSort: true, style: "Freq_Code"),
+                            grid.Column("New_Cleaning_Day", "NEW Clean Day", canSort: true, style: "Cleaning_Day"),
+                            grid.Column("New_Cleaning_Week", "NEW Clean Week", canSort: true, style: "Cleaning_Week"),
+                            grid.Column("New_Deep_Week", "NEW Deep Week", canSort: true, style: "Deep_Week"),
+                            grid.Column("New_Deep_Day", "NEW Deep Day", canSort: true, style: "Deep_Day"),
+                            grid.Column("New_Category", "NEW Category", canSort: true, style: "Category"),
+                            grid.Column("New_Land_Use_Desc", "NEW Land Use", canSort: true, style: "Land_Use_Desc"),
+                            grid.Column("New_Zone_Nr", "NEW Zone Nr", canSort: true, style: "Zone_Nr"),
+                            grid.Column("New_Length", "NEW Length", canSort: true, style: "Length"),
+                            grid.Column("New_USRN", "NEW USRN", canSort: false, style: "USRN")
+              ))
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div>
+        @Html.ActionLink("Back to Manage Transects", "Index")
+    </div>
+}
+else
+{
+    <h3 style="font-weight: bold; color: red;">Please Log into SMPL before proceeding.</h3>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+
+    </script>
+}

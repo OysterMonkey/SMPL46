@@ -1,0 +1,36 @@
+﻿
+@{
+    ViewBag.Title = "ReportViewer";
+}
+
+<h2>ReportViewer</h2>
+
+<iframe src="@Url.Content("~/AspxReportViewerWebForm.aspx?value_from_mvc=") + @Url.Encode(ViewBag.ValueFromMvc)"></iframe>
+<iframe id="ifrmReportViewer" src="~/AspxReportViewerWebForm.aspx" style="height: 2000px; width: 99%;" scrolling="no"></iframe>
+
+@section scripts {
+    <script>
+        $(document).ready(function() {
+            ReportValidationCheck();
+        });
+    </script>
+    <script>
+        function ReportValidationCheck() {
+
+            url = "../AspxReportViewerWebForm.aspx";
+
+            var myframe = Document.getElementById("ifrmReportViewer");
+            if (myframe !== null) {
+                if (myframe.src) {
+                    myframe.src = url;
+                }
+                else if (myframe.contentWindow !== null && myframe.contentWindow.location !== null) {
+                    myframe.contentWindow.location = url;
+                }
+                else { myframe.setAttribute('src', url); }
+            }
+
+            return false;
+        }
+    </script>
+}

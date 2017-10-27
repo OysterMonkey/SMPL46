@@ -1,0 +1,109 @@
+﻿@using System.Web.UI.WebControls
+@using SMPL46.Models
+@using SMPL46.ViewModels
+@model SC9StreetFinderViewModel
+@{
+    ViewBag.Title = "SC9";
+}
+
+<h2>Street Cleaning - Ad-Hoc Report on Streets</h2>
+
+@if ((bool)(System.Web.HttpContext.Current.Session["loggedin"] ?? false))
+{
+    <div class="row">
+        <div class="col-md-8">
+            <section id="loginForm">
+                @using (Html.BeginForm("SC9", "Reports", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                {
+                    if (Model.StreetFinderVM.StreetsFound == null)
+                    {
+                        <hr />
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.SC9VM.StartDate, new { @class = "col-md-2 control-label" })
+                            <div class="col-md-10">
+                                @Html.TextBoxFor(m => m.SC9VM.StartDate, "{0:dd/MM/yyyy}", new { @class = "form-control datepicker" })
+                                @Html.ValidationMessageFor(m => m.SC9VM.StartDate, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.SC9VM.EndDate, new { @class = "col-md-2 control-label" })
+                            <div class="col-md-10">
+                                @Html.TextBoxFor(m => m.SC9VM.EndDate, "{0:d}", new { @class = "form-control datepicker" })
+                                @Html.ValidationMessageFor(m => m.SC9VM.EndDate, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group" style="padding-top: 20px;">
+                            @Html.LabelFor(m => m.StreetFinderVM.StreetPrompt, new { @class = "col-md-6 control-label" })
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.StreetFinderVM.Wards, new { @class = "col-md-2 control-label" })
+                            <div class="col-md-10">
+                                @Html.DropDownListFor(m => m.StreetFinderVM.WardCode, Model.StreetFinderVM.Wards, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.StreetFinderVM.StreetName, new { @class = "col-md-2 control-label" })
+                            <div class="col-md-10">
+                                @Html.TextBoxFor(m => m.StreetFinderVM.StreetName, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.StreetFinderVM.StreetName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <input type="submit" value="Get Streets" class="btn btn-primary" />
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        if (Model.StreetFinderVM.StreetsFound.Count == 0)
+                        {
+                            @Html.LabelFor(m => m.StreetFinderVM.StreetPrompt, Model.StreetFinderVM.StreetPrompt, new { @class = "col-md-6 control-label" })
+                            @Html.ActionLink("New Search", "SC9", "Reports", new { id = 2 }, new { @class = "col-md-6 control-label" })
+                        }
+                        else
+                        {
+                            <div class="form-group" style="padding-top: 20px;">
+                                @Html.LabelFor(m => m.StreetFinderVM.StreetPrompt, Model.StreetFinderVM.StreetPrompt, new { @class = "col-md-6 control-label" })
+                                @Html.ActionLink("New Search", "SC9", "Reports", new { id = 1 }, new { @class = "col-md-6 control-label" })
+                            </div>
+                            <table class="table table-bordered">
+                                <tr class="rectificationTableHeader2">
+                                    <th>
+                                        @Html.Label("WARD")
+                                    </th>
+                                    <th>
+                                        @Html.Label("District")
+                                    </th>
+                                    <th>
+                                        @Html.Label("Street")
+                                    </th>
+                                    <th>
+                                        @Html.Label("Limits")
+                                    </th>
+                                </tr>
+                                @Html.EditorFor(m => m.StreetFinderVM.StreetsFound)
+
+                            </table>
+                        }
+                    }
+                }
+                @*@Html.Partial("StreetFinder", Model.StreetFinderVM)*@
+            </section>
+        </div>
+    </div>
+}
+else
+{
+    <h3 style="font-weight: bold; color: red;">Please Log into SMPL before proceeding.</h3>
+}
+
+@section Scripts {
+    <script type="text/javascript">
+        $('.datepicker').datepicker({
+            format: 'dd/mm/yyyy',
+            autoclose: true
+        }); //Initialise any date pickers
+    </script>
+}

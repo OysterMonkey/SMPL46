@@ -1,0 +1,83 @@
+﻿.view-switcher {
+    padding: 0.5em; 
+    font-weight: normal;
+}
+
+/* styles for validation helpers */
+.field-validation-error {
+    color: #e80c4d;
+    font-weight: bold;
+}
+
+.field-validation-valid {
+    display: none;
+}
+
+input[type="text"].input-validation-error,
+input[type="password"].input-validation-error {
+    border: solid 1px #e80c4d;
+}
+
+.validation-summary-errors {
+    color: #e80c4d;
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.validation-summary-valid {
+    display: none;
+}
+
+.checkBoxLeftMob1 {
+    position: absolute; 
+    left: 10px; 
+    top: 40%;
+}
+
+.adhocListMob {
+    padding-left: 0px;
+    margin: 0px 0px 0px 0px;
+}
+
+.has-right-radio .ui-link-inherit {
+    margin-right: 0px !important;
+}
+
+.right-radio {
+    position: absolute;
+    top: 10px; bottom: 0px; right: 0px;
+    width: 30px;
+    /*border-left: 1px solid rgb(204, 204, 204);*/
+}
+
+.right-radio .ui-checkbox input {
+    visibility: hidden;
+}
+
+.right-radio .ui-checkbox, .right-radio .ui-checkbox label {
+    position: absolute;
+    top: 10px; bottom: 10px; right: 10px; left: 10px;
+}
+
+.right-radio .ui-checkbox label {
+    background-image: none;
+    background-color: transparent;
+    border: 0;
+}
+
+.right-radio .ui-checkbox label .ui-btn-inner {
+    position: absolute;
+    top: 50%;
+    margin-top: -10px;
+}
+
+.left-adhoc-label {
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-bottom: 0px;
+    padding-top: 0px;
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-bottom: 0px;
+    margin-top: -10px;
+}
